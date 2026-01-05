@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:dynamo_json_decoder/dynamo/project/commons/system/entities/LogLevel.dart';
+import 'package:dynamo_json_decoder/dynamo/project/commons/system/entities/log_level.dart';
 
-import 'AppLogger.dart';
-import 'DynamoCommons.dart';
-import 'TokenExpectedException.dart';
+import 'app_logger.dart';
+import 'dynamo_commons.dart';
+import 'token_expected_exception.dart';
 
 class DynamoDecoder {
   static int index = 0;
@@ -13,7 +13,7 @@ class DynamoDecoder {
   //
   static AppLogger logger = AppLogger.getInstance();
 
-  static dynamic? decode(String inputExprString, {Object? Function(Object?, Object?)? reviver, bool debugMode = false}) {
+  static dynamic decode(String inputExprString, {Object? Function(Object?, Object?)? reviver, bool debugMode = false}) {
     inputString = inputExprString;
 
     inputString = inputString.replaceAll("\\\"", "\\u00E6");
@@ -22,15 +22,15 @@ class DynamoDecoder {
     index = 0;
     look = "";
 
-    dynamic? jsonObject = parseJSONStructure(0, debugMode, reviver: reviver);
+    dynamic jsonObject = parseJSONStructure(0, debugMode, reviver: reviver);
 
     return jsonObject;
   }
 
-  static dynamic? parseJSONStructure(int depth, bool debugMode, {Object? Function(Object?, Object?)? reviver}) {
+  static dynamic parseJSONStructure(int depth, bool debugMode, {Object? Function(Object?, Object?)? reviver}) {
     depth++;
 
-    dynamic? jsonObject;
+    dynamic jsonObject;
 
     skipSpace();
 
@@ -41,19 +41,19 @@ class DynamoDecoder {
     if (debugMode) {
       logger.log(
         '+++++++++++++++++++++++++++++ [0] index, look ==>> '
-        '${index}, ${look}, ${showConttext(depth)}',
-        logLevel: LogLevel.DEBUG,
+        '$index, $look, ${showConttext(depth)}',
+        logLevel: LogLevel.debug,
       );
     }
 
     if (look == "{") {
-      jsonObject = Map<String, dynamic>();
+      jsonObject = {};
 
       while (look != "}") {
         if (debugMode) {
           logger.log(
-            '+++++++++++++++++++++++++++++ [0] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-            logLevel: LogLevel.DEBUG,
+            '+++++++++++++++++++++++++++++ [0] index, look ==>> $index, $look, ${showConttext(depth)}',
+            logLevel: LogLevel.debug,
           );
         }
 
@@ -61,8 +61,8 @@ class DynamoDecoder {
 
         if (debugMode) {
           logger.log(
-            '+++++++++++++++++-++++++++++++ [0.1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-            logLevel: LogLevel.DEBUG,
+            '+++++++++++++++++-++++++++++++ [0.1] index, look ==>> $index, $look, ${showConttext(depth)}',
+            logLevel: LogLevel.debug,
           );
         }
 
@@ -75,8 +75,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ [0.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ [0.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
 
@@ -85,8 +85,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ [1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ [1] index, look ==>> $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
 
@@ -94,8 +94,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ [2] expressionKey, index, look ==>> ${expressionKey}, ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ [2] expressionKey, index, look ==>> $expressionKey, $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
 
@@ -107,8 +107,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ [3] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ [3] index, look ==>> $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
 
@@ -130,8 +130,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ [4] index, look, inputString[index] ==>> ${index}, ${look}, ${inputString[index]}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ [4] index, look, inputString[index] ==>> $index, $look, ${inputString[index]}, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
 
@@ -150,8 +150,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -161,8 +161,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [6] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [6] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
           } else if ((DynamoCommons.isAlpha(look)) && (!isStringValue)) {
@@ -173,8 +173,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5a.1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5a.1] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -187,8 +187,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5b.1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5b.1] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -197,8 +197,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5b.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5b.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -208,8 +208,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5b.3] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5b.3] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -217,8 +217,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5b.4] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5b.4] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -226,14 +226,14 @@ class DynamoDecoder {
               reviver(expressionKey, expressionValue);
             }
           } else if ((look == '{') || (look == '[')) {
-            dynamic? expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
+            dynamic expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
 
             jsonObject.putIfAbsent(expressionKey, () => expressionValue);
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5c.1] expressionKey, index, look ==>> ${expressionKey}, ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5c.1] expressionKey, index, look ==>> $expressionKey, $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -247,8 +247,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '++++++++++++++++-+++++++++++++ [5c.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '++++++++++++++++-+++++++++++++ [5c.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -263,8 +263,8 @@ class DynamoDecoder {
 
       if (debugMode) {
         logger.log(
-          '+++++++++++++++++++++++++++++ <T>[00] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-          logLevel: LogLevel.DEBUG,
+          '+++++++++++++++++++++++++++++ <T>[00] index, look ==>> $index, $look, ${showConttext(depth)}',
+          logLevel: LogLevel.debug,
         );
       }
 
@@ -273,8 +273,8 @@ class DynamoDecoder {
         skipSpace();
         if (debugMode) {
           logger.log(
-            '+++++++++++++++++++++++++++++ <T>[001] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-            logLevel: LogLevel.DEBUG,
+            '+++++++++++++++++++++++++++++ <T>[001] index, look ==>> $index, $look, ${showConttext(depth)}',
+            logLevel: LogLevel.debug,
           );
         }
 
@@ -282,18 +282,18 @@ class DynamoDecoder {
           skipSpace();
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ <T>[002] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ <T>[002] index, look ==>> $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
         } else if (look == "{") {
-          Map<String, dynamic> childJsonObject = Map<String, dynamic>();
+          Map<String, dynamic> childJsonObject = {};
 
           while (look != "}") {
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <T>[0] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <T>[0] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -301,8 +301,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <T>[0.1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <T>[0.1] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -314,8 +314,8 @@ class DynamoDecoder {
 
               if (debugMode) {
                 logger.log(
-                  '+++++++++++++++++++++++++++++ <T>[0.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                  logLevel: LogLevel.DEBUG,
+                  '+++++++++++++++++++++++++++++ <T>[0.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+                  logLevel: LogLevel.debug,
                 );
               }
 
@@ -324,8 +324,8 @@ class DynamoDecoder {
 
               if (debugMode) {
                 logger.log(
-                  '+++++++++++++++++++++++++++++ <T>[1] index, look, context ==>> ${index}, ${look}, ${showConttext(depth)}',
-                  logLevel: LogLevel.DEBUG,
+                  '+++++++++++++++++++++++++++++ <T>[1] index, look, context ==>> $index, $look, ${showConttext(depth)}',
+                  logLevel: LogLevel.debug,
                 );
               }
 
@@ -333,8 +333,8 @@ class DynamoDecoder {
 
               if (debugMode) {
                 logger.log(
-                  '+++++++++++++++++++++++++++++ <T>[2] expressionKey, index, look ==>> ${expressionKey}, ${index}, ${look}, ${showConttext(depth)}',
-                  logLevel: LogLevel.DEBUG,
+                  '+++++++++++++++++++++++++++++ <T>[2] expressionKey, index, look ==>> $expressionKey, $index, $look, ${showConttext(depth)}',
+                  logLevel: LogLevel.debug,
                 );
               }
 
@@ -346,8 +346,8 @@ class DynamoDecoder {
 
               if (debugMode) {
                 logger.log(
-                  '+++++++++++++++++++++++++++++ <T>[3] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                  logLevel: LogLevel.DEBUG,
+                  '+++++++++++++++++++++++++++++ <T>[3] index, look ==>> $index, $look, ${showConttext(depth)}',
+                  logLevel: LogLevel.debug,
                 );
               }
 
@@ -366,8 +366,8 @@ class DynamoDecoder {
 
               if (debugMode) {
                 logger.log(
-                  '+++++++++++++++++++++++++++++ <T>[4] index, look, inputString[index] ==>> ${index}, ${look}, ${inputString[index]}, ${showConttext(depth)}',
-                  logLevel: LogLevel.DEBUG,
+                  '+++++++++++++++++++++++++++++ <T>[4] index, look, inputString[index] ==>> $index, $look, ${inputString[index]}, ${showConttext(depth)}',
+                  logLevel: LogLevel.debug,
                 );
               }
 
@@ -386,8 +386,8 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[5] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[5] index, look ==>> $index, $look, ${showConttext(depth)}',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -403,8 +403,8 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ [5a.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ [5a.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -414,8 +414,8 @@ class DynamoDecoder {
               } else if ((look != '{') && (look != '[')) {
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[4b] index, look, expressionKey ==>> ${index}, ${look}, ${expressionKey}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[4b] index, look, expressionKey ==>> $index, $look, $expressionKey',
+                    logLevel: LogLevel.debug,
                   );
                 }
                 String expressionValue = getExpressionValue(false);
@@ -424,8 +424,8 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[5b] index, look, expressionValue ==>> ${index}, ${look}, ${expressionValue}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[5b] index, look, expressionValue ==>> $index, $look, $expressionValue',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -433,8 +433,8 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[6b] index, look, expressionValue ==>> ${index}, ${look}, ${expressionValue}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[6b] index, look, expressionValue ==>> $index, $look, $expressionValue',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -442,16 +442,16 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[6c] index, look, expressionValue ==>> ${index}, ${look}, ${expressionValue}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[6c] index, look, expressionValue ==>> $index, $look, $expressionValue',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
                 skipSpace();
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[6d] index, look, expressionValue ==>> ${index}, ${look}, ${expressionValue}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[6d] index, look, expressionValue ==>> $index, $look, $expressionValue',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -462,8 +462,8 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[7a] index, look, expressionValue ==>> ${index}, ${look}, ${expressionValue}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[7a] index, look, expressionValue ==>> $index, $look, $expressionValue',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -473,8 +473,8 @@ class DynamoDecoder {
               } else if ((look == '{') || (look == '[')) {
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[7b.0] index, look, expressionKey ==>> ${index}, ${look}, ${expressionKey}, ${showConttext(depth)}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[7b.0] index, look, expressionKey ==>> $index, $look, $expressionKey, ${showConttext(depth)}',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -484,8 +484,8 @@ class DynamoDecoder {
 
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[7b.1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[7b.1] index, look ==>> $index, $look, ${showConttext(depth)}',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -493,8 +493,8 @@ class DynamoDecoder {
                 skipSpace();
                 if (debugMode) {
                   logger.log(
-                    '+++++++++++++++++++++++++++++ <T>[7b.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                    logLevel: LogLevel.DEBUG,
+                    '+++++++++++++++++++++++++++++ <T>[7b.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+                    logLevel: LogLevel.debug,
                   );
                 }
 
@@ -511,8 +511,8 @@ class DynamoDecoder {
           skipSpace();
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ <T>[6] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ <T>[6] index, look ==>> $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
           if (look == '}') {
@@ -521,13 +521,13 @@ class DynamoDecoder {
             //index = DynamoCommons.skipSpace(inputString, index);
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <T>[7] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <T>[7] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
           }
         } else if (look == '[') {
-          dynamic? expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
+          dynamic expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
 
           jsonObject.add(expressionValue);
 
@@ -536,8 +536,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ <TT>[5c.2] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ <TT>[5c.2] index, look ==>> $index, $look, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
         } else {
@@ -558,8 +558,8 @@ class DynamoDecoder {
 
           if (debugMode) {
             logger.log(
-              '+++++++++++++++++++++++++++++ <S>[4] index, look, inputString[index] ==>> ${index}, ${look}, ${inputString[index]}, ${showConttext(depth)}',
-              logLevel: LogLevel.DEBUG,
+              '+++++++++++++++++++++++++++++ <S>[4] index, look, inputString[index] ==>> $index, $look, ${inputString[index]}, ${showConttext(depth)}',
+              logLevel: LogLevel.debug,
             );
           }
 
@@ -580,8 +580,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <S>[5] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <S>[5] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
           } else if ((DynamoCommons.isAlpha(look)) && (!isStringValue)) {
@@ -592,15 +592,15 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ [5a.1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ [5a.1] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
           } else if (isStringValue) {
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <S>[1] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <S>[1] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -608,8 +608,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <S>[2] index, look, expressionValue ==>> ${index}, ${look}, ${expressionValue}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <S>[2] index, look, expressionValue ==>> $index, $look, $expressionValue, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
 
@@ -620,8 +620,8 @@ class DynamoDecoder {
 
             if (debugMode) {
               logger.log(
-                '+++++++++++++++++++++++++++++ <S>[3] index, look ==>> ${index}, ${look}, ${showConttext(depth)}',
-                logLevel: LogLevel.DEBUG,
+                '+++++++++++++++++++++++++++++ <S>[3] index, look ==>> $index, $look, ${showConttext(depth)}',
+                logLevel: LogLevel.debug,
               );
             }
           }
@@ -648,7 +648,7 @@ class DynamoDecoder {
       contextText = inputString.substring(index);
     }
 
-    return '<<${depth}> <${contextText}>>';
+    return '<<$depth> <$contextText>>';
   }
 
   static String getExpressionKey() {
@@ -754,7 +754,7 @@ class DynamoDecoder {
       index = inputString.length + 1;
 
       throw TokenExpectedException(
-          "'${token}' Expected Near: ${inputString.substring(indexPos, indexPos + contextUpperPos)}... <<index, look ==>> ${indexPos}, ${look}>>");
+          "'$token' Expected Near: ${inputString.substring(indexPos, indexPos + contextUpperPos)}... <<index, look ==>> $indexPos, $look>>");
     }
   }
 }

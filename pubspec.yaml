@@ -3,6 +3,10 @@ description: "A Flutter project that decodes serialized JSON strings into Flutte
 
 version: 1.0.0
 
+repository: https://github.com/patushie/dynamo_json_decoder
+homepage: https://github.com/patushie/dynamo_json_decoder
+issue_tracker: https://github.com/patushie/dynamo_json_decoder/issues
+
 environment:
   sdk: ^3.6.0-334.3.beta
 

@@ -1,6 +1,6 @@
 enum PadDirectionType {
   //
-  LEFT,
+  left,
   //
-  RIGHT
+  right
 }

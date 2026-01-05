@@ -1,15 +1,15 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:dynamo_json_decoder/dynamo/project/commons/system/entities/LogLevel.dart';
+import 'package:dynamo_json_decoder/dynamo/project/commons/system/entities/log_level.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //
 import 'dart:ui' as ui;
 
-import 'package:dynamo_json_decoder/dynamo/project/commons/constants/PadDirectionType.dart';
+import 'package:dynamo_json_decoder/dynamo/project/commons/constants/pad_direction_type.dart';
 
-import 'AppLogger.dart';
+import 'app_logger.dart';
 
 class DynamoCommons {
 
@@ -98,7 +98,7 @@ class DynamoCommons {
   }
 
   static bool isEmailFormat(String? emailAddress) {
-    bool? emailValidated = emailAddress != null && emailAddress.trim().length > 0;
+    bool? emailValidated = emailAddress != null && emailAddress.trim().isNotEmpty;
 
     if (emailValidated) {
       List<String> emailPart = emailAddress.split("@");
@@ -132,11 +132,11 @@ class DynamoCommons {
 
   static String padString(String inputStr, String padString, int padLength, PadDirectionType directionType) {
     if (inputStr.length < padLength) {
-      if (directionType == PadDirectionType.LEFT) {
+      if (directionType == PadDirectionType.left) {
         for (int i = 0; i <= padLength - inputStr.length - 1; i++) {
           inputStr = padString + inputStr;
         }
-      } else if (directionType == PadDirectionType.RIGHT) {
+      } else if (directionType == PadDirectionType.right) {
         for (int i = 0; i <= padLength - inputStr.length - 1; i++) {
           inputStr = inputStr + padString;
         }
@@ -149,12 +149,10 @@ class DynamoCommons {
   static String getEnumStringValue(String enumStr) {
     String enumNameValue = "";
 
-    if (enumStr != null) {
-      if (enumStr.indexOf(".") > -1) {
-        enumNameValue = enumStr.substring(enumStr.indexOf(".") + 1);
-      } else {
-        enumNameValue = enumStr;
-      }
+    if (enumStr.contains(".")) {
+      enumNameValue = enumStr.substring(enumStr.indexOf(".") + 1);
+    } else {
+      enumNameValue = enumStr;
     }
 
     return enumNameValue;
@@ -169,7 +167,7 @@ class DynamoCommons {
     moneyStr = moneyStr.replaceAll(" ", "");
 
     if((moneyStr.startsWith("(")) && (moneyStr.endsWith(")"))) {
-      moneyStr = "-"+moneyStr.substring(1, moneyStr.length-1);
+      moneyStr = '-${moneyStr.substring(1, moneyStr.length - 1)}';
     }
 
     return moneyStr;
@@ -199,14 +197,14 @@ class DynamoCommons {
       String? fractionalPortion = moneyStr.substring(moneyStr.indexOf(".") + 1, moneyStr.length);
 
       if (fractionalPortion.length == 2) {
-        moneyStr = getFormattedAmount(decimalPortion) + "." + fractionalPortion;
+        moneyStr = '${getFormattedAmount(decimalPortion)}.$fractionalPortion';
       } else if (fractionalPortion.length > 2) {
-        moneyStr = getFormattedAmount(decimalPortion) + "." + fractionalPortion.substring(0, 2);
+        moneyStr = '${getFormattedAmount(decimalPortion)}.${fractionalPortion.substring(0, 2)}';
       } else {
-        moneyStr = getFormattedAmount(decimalPortion) + "." + fractionalPortion + "0";
+        moneyStr = '${getFormattedAmount(decimalPortion)} . ${fractionalPortion}0';
       }
     } else {
-      moneyStr = getFormattedAmount(moneyStr) + ".00";
+      moneyStr = '${getFormattedAmount(moneyStr)} .00';
     }
 
     if (removeZeroFraction) {
@@ -228,8 +226,8 @@ class DynamoCommons {
       if (threesCount < 3) {
         threesTerm = moneyStr[i] + threesTerm;
       } else {
-        if (formattedAmt.length > 0) {
-          formattedAmt = threesTerm + "," + formattedAmt;
+        if (formattedAmt.isNotEmpty) {
+          formattedAmt = '$threesTerm,$formattedAmt';
         } else {
           formattedAmt = threesTerm;
         }
@@ -241,9 +239,9 @@ class DynamoCommons {
       threesCount++;
     }
 
-    if (threesTerm.length > 0) {
-      if (formattedAmt.length > 0) {
-        formattedAmt = threesTerm + "," + formattedAmt;
+    if (threesTerm.isNotEmpty) {
+      if (formattedAmt.isNotEmpty) {
+        formattedAmt = '$threesTerm,$formattedAmt';
       } else {
         formattedAmt = threesTerm;
       }
@@ -297,7 +295,7 @@ class DynamoCommons {
   }
 
   static int asciiTag(String ch) {
-    return ch!.codeUnitAt(0);
+    return ch.codeUnitAt(0);
   }
 
   static bool hasNonZeroDigit(String digitSequence) {
@@ -338,7 +336,7 @@ class DynamoCommons {
   }
 
   static Map<String, dynamic> parseStringToMap(String inputString) {
-    Map<String, dynamic> nameValueMap = new Map<String, dynamic>();
+    Map<String, dynamic> nameValueMap = {};
 
     if (inputString[0] == "{") {
       inputString = inputString.substring(1);
@@ -350,12 +348,12 @@ class DynamoCommons {
 
     List<String> nameValuePairList = inputString.split(",");
 
-    nameValuePairList.forEach((element) {
+    for (var element in nameValuePairList) {
       List<String> nameValueArray = element.split("=");
       if (nameValueArray.length == 2) {
         nameValueMap.putIfAbsent(nameValueArray[0].trim(), () => nameValueArray[1]);
       }
-    });
+    }
 
     return nameValueMap;
   }
@@ -364,7 +362,7 @@ class DynamoCommons {
     AppLogger logger = AppLogger.getInstance();
 
     Uri myUri = Uri.parse(filePath);
-    File fileHandle = new File.fromUri(myUri);
+    File fileHandle = File.fromUri(myUri);
 
     late Uint8List bytes;
 
@@ -372,7 +370,7 @@ class DynamoCommons {
       bytes = Uint8List.fromList(value);
       logger.log('reading of bytes is completed');
     }).catchError((onError) {
-      logger.log('Exception Error while reading audio from path:' + onError.toString(), logLevel: LogLevel.ERROR);
+      logger.log('Exception Error while reading audio from path: ${onError.toString()}', logLevel: LogLevel.error);
     });
 
     return bytes;
@@ -380,19 +378,17 @@ class DynamoCommons {
 
   static Future<void> deleteFile(String filePath) async {
     Uri myUri = Uri.parse(filePath);
-    File fileHandle = new File.fromUri(myUri);
+    File fileHandle = File.fromUri(myUri);
 
     await fileHandle.delete();
   }
 
-  static String getTextByLimitedLength(String? inputText, {int? limitLength = 0}) {
-    if (inputText == null) {
-      inputText = "";
-    }
+  static String getTextByLimitedLength(String? inputText, {int limitLength = 0}) {
+    inputText ??= "";
 
-    if (inputText.trim().length > 0) {
-      if ((limitLength! > 0) && (inputText.length > limitLength!)) {
-        inputText = inputText.substring(0, limitLength - 3) + "...";
+    if (inputText.trim().isNotEmpty) {
+      if (limitLength > 0 && inputText.length > limitLength) {
+        return "${inputText.substring(0, limitLength - 3)}...";
       }
     }
 
@@ -402,9 +398,8 @@ class DynamoCommons {
   static bool isAlphaNumeric(String inputStr) {
     bool isAlNumSeq = true;
     int index = 0;
-    int dotCount = 0;
 
-    if (inputStr.trim().length == 0) {
+    if (inputStr.trim().isEmpty) {
       isAlNumSeq = false;
       return isAlNumSeq;
     }
@@ -428,7 +423,7 @@ class DynamoCommons {
     int index = 0;
     int dotCount = 0;
 
-    if (inputStr.trim().length == 0) {
+    if (inputStr.trim().isEmpty) {
       isAlNumSeq = false;
       return isAlNumSeq;
     }
@@ -453,16 +448,14 @@ class DynamoCommons {
     return isAlNumSeq;
   }
 
-  /**
-   * is alpha-numeric String? with Non-back-to-back dot sequence
-   * example: lenon..traxo
-   */
+  /// is alpha-numeric String? with Non-back-to-back dot sequence
+  /// example: lenon..traxo
   static bool isAlphaNumericWithNonB2BDots(String inputStr) {
     bool isAlNumSeq = true;
     int index = 0;
     int dotCount = 0;
 
-    if (inputStr.trim().length == 0) {
+    if (inputStr.trim().isEmpty) {
       isAlNumSeq = false;
       return isAlNumSeq;
     }
@@ -495,7 +488,7 @@ class DynamoCommons {
     bool isDigSeq = true;
     int index = 0;
 
-    if (inputStr.trim().length == 0) {
+    if (inputStr.trim().isEmpty) {
       isDigSeq = false;
       return isDigSeq;
     }
@@ -516,7 +509,7 @@ class DynamoCommons {
     int index = 0;
     int dotCount = 0;
 
-    if (inputStr.trim().length == 0) {
+    if (inputStr.trim().isEmpty) {
       isDigSeq = false;
       return isDigSeq;
     }
@@ -542,7 +535,7 @@ class DynamoCommons {
     bool isDigSeq = true;
     int index = 0;
 
-    if (inputStr.trim().length == 0) {
+    if (inputStr.trim().isEmpty) {
       isDigSeq = false;
       return isDigSeq;
     }
@@ -564,12 +557,12 @@ class DynamoCommons {
   }
 
   static double getSimilarity(String a, String b) {
-    double _similarity = 0;
+    double similarity = 0;
 
     a = a.toUpperCase();
     b = b.toUpperCase();
-    _similarity = 1 - levenshtein(a, b) / (max(a.length, b.length));
-    return (_similarity);
+    similarity = 1 - levenshtein(a, b) / (max(a.length, b.length));
+    return (similarity);
   }
 
   static int levenshtein(String a, String b) {
@@ -579,14 +572,14 @@ class DynamoCommons {
     int sb = b.length;
     int i, j, cost, min1, min2, min3;
     int levenshtein;
-    List<List<int>> d = new List.generate(sa + 1, (int? i) => List<int>.filled(sb + 1, 0, growable: true));
+    List<List<int>> d = List.generate(sa + 1, (int? i) => List<int>.filled(sb + 1, 0, growable: true));
 
-    if (a.length == 0) {
+    if (a.isEmpty) {
       levenshtein = b.length;
       return (levenshtein);
     }
 
-    if (b.length == 0) {
+    if (b.isEmpty) {
       levenshtein = a.length;
       return (levenshtein);
     }
@@ -599,7 +592,7 @@ class DynamoCommons {
       d[0][j] = j;
     }
 
-    for (i = 1; i <= a.length; i++)
+    for (i = 1; i <= a.length; i++) {
       for (j = 1; j <= b.length; j++) {
         if (a[i - 1] == b[j - 1]) {
           cost = 0;
@@ -612,6 +605,7 @@ class DynamoCommons {
         min3 = (d[i - 1][j - 1] + cost);
         d[i][j] = min(min1, min(min2, min3));
       }
+    }
 
     levenshtein = d[a.length][b.length];
 
