@@ -46,6 +46,7 @@ class DynamoCommons {
     "\\u005E": "^",
   };
 
+  /// Replaces special characters with their unicode values.
   static String encodeSpecialCharacters(String inputString) {
     String encodedString = inputString;
 
@@ -58,6 +59,7 @@ class DynamoCommons {
     return encodedString;
   }
 
+  /// strips off the nase URL leaving only the simple file name.
   static String showSimpleFileName(String fileName) {
     String simpleFileName = "";
 
@@ -69,6 +71,7 @@ class DynamoCommons {
     return simpleFileName;
   }
 
+  /// checks if a screen size is mobile.
   static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < 650;
 
   /// tablet >= 650
@@ -77,6 +80,7 @@ class DynamoCommons {
   ///desktop >= 1100
   static bool isDesktop(BuildContext context) => MediaQuery.of(context).size.width >= 1100;
 
+  /// Replaces unicode characters with their corresponding special characters.
   static String decodeUnicodeCharacters(String messageText) {
     specialCharUnicodeMap.forEach((key, value) {
       messageText = messageText.replaceAll(key, value);
@@ -85,6 +89,7 @@ class DynamoCommons {
     return messageText;
   }
 
+  /// returns 'Person' if [personCount] is 1 otherwise it returns 'People'.
   static String getPersonSet(int personCount) {
     if (personCount == 1) {
       return "Person";
@@ -93,10 +98,12 @@ class DynamoCommons {
     }
   }
 
+  /// strips off the domain name part of an email'.
   static String getUnqualifiedEmailName(String emailAddress) {
     return emailAddress.contains("@") ? emailAddress.substring(0, emailAddress.indexOf("@")) : emailAddress;
   }
 
+  /// checks if an email address is correctly formatted.
   static bool isEmailFormat(String? emailAddress) {
     bool? emailValidated = emailAddress != null && emailAddress.trim().isNotEmpty;
 
@@ -110,6 +117,7 @@ class DynamoCommons {
     return emailValidated;
   }
 
+  /// does a calculation to determine a Text widget height.
   static int calculateCharactersThatFit(String text, double containerWidth, TextStyle textStyle) {
     final textPainter = TextPainter(
       textDirection: ui.TextDirection.ltr,
@@ -130,6 +138,8 @@ class DynamoCommons {
     return text.length; // If all characters fit, return the total length
   }
 
+  /// pads the input text [inputStr] with the pad string [padString],
+  /// in the direction provided by [directionType], until the padded string equals [padLength].
   static String padString(String inputStr, String padString, int padLength, PadDirectionType directionType) {
     if (inputStr.length < padLength) {
       if (directionType == PadDirectionType.left) {
@@ -146,6 +156,7 @@ class DynamoCommons {
     return inputStr;
   }
 
+  /// get enum field simple name
   static String getEnumStringValue(String enumStr) {
     String enumNameValue = "";
 
@@ -162,6 +173,7 @@ class DynamoCommons {
     return errorMessage == "Exception: <<SESSION-LOST>>";
   }
 
+  /// remove money-type formatting from a string before converting it to a number
   static String unformatMoneyValue(String moneyStr) {
     moneyStr = moneyStr.replaceAll(",", "");
     moneyStr = moneyStr.replaceAll(" ", "");
@@ -173,6 +185,7 @@ class DynamoCommons {
     return moneyStr;
   }
 
+  /// 17500 =>> 17,500
   static String getIntegerFormatted(double amount) {
     String moneyStr = amount.toString();
 
@@ -184,6 +197,7 @@ class DynamoCommons {
     }
   }
 
+  /// 17500 =>> 17,500.00
   static String getMoneyFormat(double amount, {bool removeZeroFraction = false}) {
     bool? isNegativeAmt = amount < 0;
 
@@ -216,6 +230,7 @@ class DynamoCommons {
     return isNegativeAmt ? "($moneyStr)" : moneyStr;
   }
 
+  /// formats the decimal part of a floating point number
   static String getFormattedAmount(String moneyStr) {
     String formattedAmt = "";
 
@@ -250,20 +265,24 @@ class DynamoCommons {
     return formattedAmt;
   }
 
+  /// Get string as bool
   static bool getAsBool(String boolStr) {
     return boolStr.toLowerCase() == "true";
   }
 
+  /// check if character matches carriage return
   static bool isEnterKey(String char) {
     return char.codeUnitAt(0) == 13 || char == '\n' || char == '\r' || char == '\r\n';
   }
 
+  /// check if character is an alphabet
   static bool isAlpha(String char) {
     int? asciiCode = char.codeUnitAt(0);
 
     return (asciiCode >= 65 && asciiCode <= 90) || (asciiCode >= 97 && asciiCode <= 122);
   }
 
+  /// check if String has a capital letter
   static bool hasCapitalLetter(String inputString) {
     bool hasCapLetter = false;
     int index = 0;
@@ -280,24 +299,29 @@ class DynamoCommons {
     return hasCapLetter;
   }
 
+  /// check if character is a capital letter
   static bool isCapitalLetter(String char) {
     int? asciiCode = char.codeUnitAt(0);
     return (asciiCode >= 65 && asciiCode <= 90);
   }
 
+  /// check if character is a number
   static bool isDigit(String char) {
     int asciiCode = char.codeUnitAt(0);
     return (asciiCode >= 48 && asciiCode <= 57);
   }
 
+  /// check if character is an alphabet or number
   static bool isAlphaNum(String char) {
     return isAlpha(char) || isDigit(char);
   }
 
+  /// get the ASCII value of a character
   static int asciiTag(String ch) {
     return ch.codeUnitAt(0);
   }
 
+  /// check if the string has a non-zero digit
   static bool hasNonZeroDigit(String digitSequence) {
     bool foundNonZero = false;
 
@@ -312,10 +336,12 @@ class DynamoCommons {
     return foundNonZero;
   }
 
+  /// check if character is a whaite space
   static bool isSpace(String char) {
     return char.codeUnitAt(0) == 32;
   }
 
+  /// skip whitespace character in a character sequence.
   static int skipSpace(String inputString, int index) {
     if (index <= inputString.length - 1) {
       while ((isSpace(inputString[index])) && (index <= inputString.length - 1)) {
@@ -326,6 +352,8 @@ class DynamoCommons {
     return index;
   }
 
+  /// continuously remove the first character of the string [inputString]
+  /// if it starts with the character held by [leading].
   static String removeLeading(String inputString, String leading) {
     if (inputString.startsWith(leading)) {
       inputString = inputString.substring(1);
@@ -335,6 +363,8 @@ class DynamoCommons {
     return inputString;
   }
 
+  /// A simple parser method that returns a specific definition of a map object:
+  /// `inputString = {key1=value1, key2=value2, ..., keyN=valueN}`
   static Map<String, dynamic> parseStringToMap(String inputString) {
     Map<String, dynamic> nameValueMap = {};
 
@@ -358,6 +388,7 @@ class DynamoCommons {
     return nameValueMap;
   }
 
+  /// read the byte array of the file with path [filePath].
   static Future<Uint8List> readFileByte(String filePath) async {
     AppLogger logger = AppLogger.getInstance();
 
@@ -376,6 +407,7 @@ class DynamoCommons {
     return bytes;
   }
 
+  /// delete file with path [filePath].
   static Future<void> deleteFile(String filePath) async {
     Uri myUri = Uri.parse(filePath);
     File fileHandle = File.fromUri(myUri);
@@ -383,6 +415,7 @@ class DynamoCommons {
     await fileHandle.delete();
   }
 
+  /// trim [inputText] from the right to fit the length of [limitLength].
   static String getTextByLimitedLength(String? inputText, {int limitLength = 0}) {
     inputText ??= "";
 
@@ -395,6 +428,7 @@ class DynamoCommons {
     return inputText;
   }
 
+  /// check if the [inputStr] is alpha-numeric
   static bool isAlphaNumeric(String inputStr) {
     bool isAlNumSeq = true;
     int index = 0;
@@ -418,6 +452,7 @@ class DynamoCommons {
     return isAlNumSeq;
   }
 
+  /// check if the [inputStr] is alpha-numeric with a single dot occurence
   static bool isAlphaNumericWithADot(String inputStr) {
     bool isAlNumSeq = true;
     int index = 0;
@@ -484,6 +519,7 @@ class DynamoCommons {
     return isAlNumSeq;
   }
 
+  /// check if the [inputStr] is a digit sequence
   static bool isDigitSequence(String inputStr) {
     bool isDigSeq = true;
     int index = 0;
@@ -504,6 +540,7 @@ class DynamoCommons {
     return isDigSeq;
   }
 
+  /// check if the [inputStr] is a digit sequence with a single dot
   static bool isDigitSequenceWithADot(String inputStr) {
     bool isDigSeq = true;
     int index = 0;
@@ -531,6 +568,7 @@ class DynamoCommons {
     return isDigSeq;
   }
 
+  /// check if the [inputStr] is a digit sequence with more than one dot
   static bool isDigitSequenceWithDots(String inputStr) {
     bool isDigSeq = true;
     int index = 0;
@@ -552,10 +590,12 @@ class DynamoCommons {
     return isDigSeq;
   }
 
+  /// check if the [inputStr] is a number
   static bool isNumber(String inputStr) {
     return isDigitSequence(inputStr) || isDigitSequenceWithADot(inputStr);
   }
 
+  /// calculate the similarity between the two strings [a] and [b]
   static double getSimilarity(String a, String b) {
     double similarity = 0;
 

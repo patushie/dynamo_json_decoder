@@ -6,6 +6,7 @@ import 'app_logger.dart';
 import 'dynamo_commons.dart';
 import 'token_expected_exception.dart';
 
+/// The main class for performing the JSON object decoding
 class DynamoDecoder {
   static int index = 0;
   static String look = "";
@@ -13,6 +14,7 @@ class DynamoDecoder {
   //
   static AppLogger logger = AppLogger.getInstance();
 
+  /// the decoder entrypoint: this method handles the decoding
   static dynamic decode(String inputExprString, {Object? Function(Object?, Object?)? reviver, bool debugMode = false}) {
     inputString = inputExprString;
 
@@ -27,6 +29,8 @@ class DynamoDecoder {
     return jsonObject;
   }
 
+  /// The parser method: uses lexical and syntactical analysis
+  /// to traverse the string and construct the JSON object graph.
   static dynamic parseJSONStructure(int depth, bool debugMode, {Object? Function(Object?, Object?)? reviver}) {
     depth++;
 

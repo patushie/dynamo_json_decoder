@@ -1,6 +1,7 @@
 import 'package:dynamo_json_decoder/dynamo/project/commons/system/entities/log_level.dart';
 import 'package:logger/logger.dart';
 
+/// A utility class for handling application-wide logging.
 class AppLogger {
   static Logger? _logger;
   static var _instance;
@@ -11,6 +12,7 @@ class AppLogger {
     );
   }
 
+  /// Returns the singleton instance of [AppLogger].
   static AppLogger getInstance() {
     if (_instance == null) {
       _instance = AppLogger._();
@@ -19,6 +21,10 @@ class AppLogger {
     return _instance;
   }
 
+  /// Outputs [logData] to the console, categorized by the provided [logLevel].
+  ///
+  /// If [logLevel] is not specified, it defaults to [LogLevel.none]
+  /// - which in turn defaults to [LogLevel.info].
   void log(String logData, {LogLevel logLevel = LogLevel.none}) {
     if(logLevel == LogLevel.trace) {
       _logger!.t(logData);
