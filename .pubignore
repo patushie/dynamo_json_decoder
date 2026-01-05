@@ -6,3 +6,5 @@ windows/
 web/
 *.iml
 .idea/
+build/
+ .dart_tool/

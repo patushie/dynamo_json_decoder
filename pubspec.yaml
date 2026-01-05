@@ -8,7 +8,7 @@ homepage: https://github.com/patushie/dynamo_json_decoder
 issue_tracker: https://github.com/patushie/dynamo_json_decoder/issues
 
 environment:
-  sdk: ^3.6.0-334.3.beta
+  sdk: ^3.0.0
 
 dependencies:
   flutter:
