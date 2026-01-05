@@ -47,24 +47,57 @@ Integration with HTTP
 ```
 import 'package:http/http.dart' as http;
 
-Future<Map<String, dynamic>> getRemoteData() async {
-  final response = await http.get(Uri.parse("[https://api.example.com/data](https://api.example.com/data)"));
+class CustomerDTO {
+  int? customerID = 0;
+  String? customerName = "";
+  String? customerPhone = "";
+
+  CustomerDTO({
+    this.customerID,
+    this.customerName,
+    this.customerPhone,
+  });
+
+  CustomerDTO.init(){
+    customerID = 0;
+    customerName = "";
+    customerPhone = "";
+  }
+
+  CustomerDTO fromMap(Map<String, dynamic> json) =>
+      new CustomerDTO(
+        customerID: json["customerID"],
+        customerName: json["customerName"],
+        customerPhone: json["customerPhone"],
+      );
+}
+
+Future<CustomerDTO> getRemoteDataByID(int customerID) async {
+  final response = await http.get(
+     Uri.parse("[https://api.example.com/data?customerID=${customerID}](https://api.example.com/data?customerID=${customerID})"));
   
   if (response.statusCode == 200) {
     // Automatically handles Maps
-    return DynamoDecoder.decode(response.body);
+    return CustomerDTO.init().fromMap(DynamoDecoder.decode(response.body));
   }
 }
 
-
-Future<List<dynamic>> getRemoteListData() async {
+Future<List<CustomerDTO>> getRemoteListData() async {
+  List<CustomerDTO> customerList = [];
+  
   final response = await http.get(
-     Uri.parse("[https://api.example.com/data](https://api.example.com/data)"));
+     Uri.parse("[https://api.example.com/datalist](https://api.example.com/datalist)"));
   
   if (response.statusCode == 200) {
     // Automatically handles Lists
-    return DynamoDecoder.decode(response.body);
+    List<dynamic> entityMapList = DynamoDecoder.decode(response.body);
+    entityMapList.forEach((element) {
+      CustomerDTO customer = CustomerDTO.init().fromMap(element);
+      customerList.add(customer);
+    });
   }
+  
+  return customerList;
 }
 ```
 
