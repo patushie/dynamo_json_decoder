@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 /// A utility class for handling application-wide logging.
 class AppLogger {
   static Logger? _logger;
-  static var _instance;
+  static AppLogger? _instance;
 
   AppLogger._() {
     _logger = Logger(
@@ -14,11 +14,9 @@ class AppLogger {
 
   /// Returns the singleton instance of [AppLogger].
   static AppLogger getInstance() {
-    if (_instance == null) {
-      _instance = AppLogger._();
-    }
+    _instance ??= AppLogger._();
 
-    return _instance;
+    return _instance!;
   }
 
   /// Outputs [logData] to the console, categorized by the provided [logLevel].
