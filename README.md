@@ -1,48 +1,88 @@
 # dynamo_json_decoder
 
-A lightweight, high-performance Flutter project for decoding serialized JSON text into Flutter 
-objects - particularly Map<String, dynamic> and List<dynamic>.
+A lightweight, high-performance utility for decoding serialized JSON text into Dart objects (`Map` or `List`). Designed for speed and ease of use in Flutter applications.
+
+[![pub package](https://img.shields.io/pub/v/dynamo_json_decoder.svg)](https://pub.dev/packages/dynamo_json_decoder)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## 🌟 Features
 
-* **Decode A Serialized JSON String:** Take a raw JSON string and convert it into a Map<String, dynamic> 
-* or List<dynamic> depending on the object structure.
-* **Run In Debug Mode:** Switch to debug mode to receive and print error logs from the API.
+* **Type-Safe Decoding:** Easily convert raw JSON strings into `Map<String, dynamic>` or `List<dynamic>`.
+* **Debug Logging:** Integrated support for error tracking during the decoding process.
+* **Zero Boilerplate:** Static methods allow you to decode without instantiating complex classes.
 
-## 🛠️ Tech Stack
-* **Dependencies:** [Dart](https://dart.dev/) (v3.x), [Flutter](https://flutter.dev) (v3.x)
+## 📦 Installation
 
-### Prerequisites
-* Flutter SDK Installed
+Add the dependency to your `pubspec.yaml`:
 
-## Installation
-* **Run this command:**
-* flutter pub add dynamo_json_decoder
-* 
-* **Or add  the following line under the dependencies section of your project's pubspec.yml file:**
-* dependencies:
-* dynamo_json_decoder: ^1.0.0
+```yaml
+dependencies:
+  dynamo_json_decoder: ^1.0.0
+```
+Or run:
 
-## Import It
-* Now in your Flutter code, you can use:
-* import 'package:dynamo/projects/commons/system/handlers/DynamoDecoder.dart';
+```flutter pub add dynamo_json_decoder```
 
-## Getting Started
-* static AppLogger logger = AppLogger.getInstance();
-* 
-* String serviceURL = "your.service.url"; //example: http://localhost:8080/api/calculateQuote
-* var response = await http.get(Uri.parse(serviceURL));
-* 
-* if (response.statusCode == 200) {
-*   return DynamoDecoder.decode(response.body);
-* }
-* 
+## 🚀 Usage
 
-A few resources to get you started if this is your first Flutter project:
+Import the library
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```import 'package:dynamo_json_decoder/dynamo_json_decoder.dart';```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Simple Decoding Example
+
+```
+void fetchUser() async {
+  String rawJson = '{"id": 1, "name": "John Doe"}';
+  
+  // Decode into a Map
+  Map<String, dynamic> user = DynamoDecoder.decode(rawJson);
+  
+  print(user['name']); // Output: John Doe
+}
+```
+
+Integration with HTTP
+
+```
+import 'package:http/http.dart' as http;
+
+Future<Map<String, dynamic>> getRemoteData() async {
+  final response = await http.get(Uri.parse("[https://api.example.com/data](https://api.example.com/data)"));
+  
+  if (response.statusCode == 200) {
+    // Automatically handles Maps
+    return DynamoDecoder.decode(response.body);
+  }
+}
+
+
+Future<List<dynamic>> getRemoteListData() async {
+  final response = await http.get(
+     Uri.parse("[https://api.example.com/data](https://api.example.com/data)"));
+  
+  if (response.statusCode == 200) {
+    // Automatically handles Lists
+    return DynamoDecoder.decode(response.body);
+  }
+}
+```
+
+## 🛠️ Debug Mode
+
+You can pass a reviver function or enable debug logging to inspect the decoding process:
+
+```
+   Map<String, dynamic>? jsonObject = DynamoDecoder
+      .decode(rawJson, debugMode: true, reviver: (k, v) {
+      print('+++++++++++++++++++++++++++++ k, v ==>> ${k}, ${v}');
+    });
+```
+
+## 📄 License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/patushie/dynamo_json_decoder/issues).
