@@ -1,7 +1,7 @@
 name: dynamo_json_decoder
 description: "A Flutter project that decodes serialized JSON strings into Flutter collection objects."
 
-version: 1.0.2
+version: 1.0.4
 
 repository: https://github.com/patushie/dynamo_json_decoder
 homepage: https://github.com/patushie/dynamo_json_decoder

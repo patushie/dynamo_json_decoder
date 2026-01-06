@@ -15,7 +15,8 @@ class DynamoDecoder {
   static AppLogger logger = AppLogger.getInstance();
 
   /// the decoder entrypoint: this method handles the decoding
-  static dynamic decode(String inputExprString, {Object? Function(Object?, Object?)? reviver, bool debugMode = false}) {
+  static dynamic decode(String inputExprString,
+      {Object? Function(Object?, Object?)? reviver, bool debugMode = false}) {
     inputString = inputExprString;
 
     inputString = inputString.replaceAll("\\\"", "\\u00E6");
@@ -31,7 +32,8 @@ class DynamoDecoder {
 
   /// The parser method: uses lexical and syntactical analysis
   /// to traverse the string and construct the JSON object graph.
-  static dynamic parseJSONStructure(int depth, bool debugMode, {Object? Function(Object?, Object?)? reviver}) {
+  static dynamic parseJSONStructure(int depth, bool debugMode,
+      {Object? Function(Object?, Object?)? reviver}) {
     depth++;
 
     dynamic jsonObject;
@@ -122,7 +124,10 @@ class DynamoDecoder {
 
           bool isStringValue = false;
 
-          if (!DynamoCommons.isDigit(look) && look != "-" && look != "{" && look != "[") {
+          if (!DynamoCommons.isDigit(look) &&
+              look != "-" &&
+              look != "{" &&
+              look != "[") {
             if (look == '"') {
               isStringValue = true;
             }
@@ -139,13 +144,16 @@ class DynamoDecoder {
             );
           }
 
-          if ((DynamoCommons.isDigit(look) || look == "-") && (!isStringValue)) {
+          if ((DynamoCommons.isDigit(look) || look == "-") &&
+              (!isStringValue)) {
             String expressionValue = getExpressionValue(true);
 
             if (DynamoCommons.isDigitSequence(expressionValue)) {
-              jsonObject.putIfAbsent(expressionKey, () => int.parse(expressionValue));
+              jsonObject.putIfAbsent(
+                  expressionKey, () => int.parse(expressionValue));
             } else if (DynamoCommons.isDigitSequenceWithADot(expressionValue)) {
-              jsonObject.putIfAbsent(expressionKey, () => double.parse(expressionValue));
+              jsonObject.putIfAbsent(
+                  expressionKey, () => double.parse(expressionValue));
             }
 
             if ((look == ']') || (look == '}')) {
@@ -230,7 +238,8 @@ class DynamoDecoder {
               reviver(expressionKey, expressionValue);
             }
           } else if ((look == '{') || (look == '[')) {
-            dynamic expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
+            dynamic expressionValue =
+                parseJSONStructure(depth, debugMode, reviver: reviver);
 
             jsonObject.putIfAbsent(expressionKey, () => expressionValue);
 
@@ -244,7 +253,9 @@ class DynamoDecoder {
             read();
             skipSpace();
 
-            if ((look == '}') && (depth == 1) && (index < inputString.length - 1)) {
+            if ((look == '}') &&
+                (depth == 1) &&
+                (index < inputString.length - 1)) {
               read();
               skipSpace();
             }
@@ -361,7 +372,10 @@ class DynamoDecoder {
 
               bool isStringValue = false;
 
-              if (!DynamoCommons.isDigit(look) && look != "-" && look != "{" && look != "[") {
+              if (!DynamoCommons.isDigit(look) &&
+                  look != "-" &&
+                  look != "{" &&
+                  look != "[") {
                 if (look == '"') {
                   isStringValue = true;
                   read(indexPos: index);
@@ -375,13 +389,17 @@ class DynamoDecoder {
                 );
               }
 
-              if ((DynamoCommons.isDigit(look) || look == "-") && (!isStringValue)) {
+              if ((DynamoCommons.isDigit(look) || look == "-") &&
+                  (!isStringValue)) {
                 String expressionValue = getExpressionValue(true);
 
                 if (DynamoCommons.isDigitSequence(expressionValue)) {
-                  childJsonObject.putIfAbsent(expressionKey, () => int.parse(expressionValue));
-                } else if (DynamoCommons.isDigitSequenceWithADot(expressionValue)) {
-                  childJsonObject.putIfAbsent(expressionKey, () => double.parse(expressionValue));
+                  childJsonObject.putIfAbsent(
+                      expressionKey, () => int.parse(expressionValue));
+                } else if (DynamoCommons.isDigitSequenceWithADot(
+                    expressionValue)) {
+                  childJsonObject.putIfAbsent(
+                      expressionKey, () => double.parse(expressionValue));
                 }
 
                 if ((look == ']') || (look == '}')) {
@@ -401,7 +419,8 @@ class DynamoDecoder {
               } else if ((DynamoCommons.isAlpha(look)) && (!isStringValue)) {
                 String expressionValue = getNonStrExpressionValue();
 
-                childJsonObject.putIfAbsent(expressionKey, () => expressionValue);
+                childJsonObject.putIfAbsent(
+                    expressionKey, () => expressionValue);
 
                 skipSpace();
 
@@ -424,7 +443,8 @@ class DynamoDecoder {
                 }
                 String expressionValue = getExpressionValue(false);
 
-                childJsonObject.putIfAbsent(expressionKey, () => expressionValue);
+                childJsonObject.putIfAbsent(
+                    expressionKey, () => expressionValue);
 
                 if (debugMode) {
                   logger.log(
@@ -482,9 +502,11 @@ class DynamoDecoder {
                   );
                 }
 
-                dynamic expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
+                dynamic expressionValue =
+                    parseJSONStructure(depth, debugMode, reviver: reviver);
 
-                childJsonObject.putIfAbsent(expressionKey, () => expressionValue);
+                childJsonObject.putIfAbsent(
+                    expressionKey, () => expressionValue);
 
                 if (debugMode) {
                   logger.log(
@@ -531,7 +553,8 @@ class DynamoDecoder {
             }
           }
         } else if (look == '[') {
-          dynamic expressionValue = parseJSONStructure(depth, debugMode, reviver: reviver);
+          dynamic expressionValue =
+              parseJSONStructure(depth, debugMode, reviver: reviver);
 
           jsonObject.add(expressionValue);
 
@@ -547,7 +570,10 @@ class DynamoDecoder {
         } else {
           bool isStringValue = false;
 
-          if (!DynamoCommons.isDigit(look) && look != "-" && look != "{" && look != "[") {
+          if (!DynamoCommons.isDigit(look) &&
+              look != "-" &&
+              look != "{" &&
+              look != "[") {
             if (look == '"') {
               isStringValue = true;
               read(indexPos: index);
@@ -567,7 +593,8 @@ class DynamoDecoder {
             );
           }
 
-          if ((DynamoCommons.isDigit(look) || look == "-") && (!isStringValue)) {
+          if ((DynamoCommons.isDigit(look) || look == "-") &&
+              (!isStringValue)) {
             String expressionValue = getExpressionValue(true);
 
             if (DynamoCommons.isDigitSequence(expressionValue)) {
@@ -637,7 +664,9 @@ class DynamoDecoder {
   }
 
   static void skipSpace() {
-    if ((index <= inputString.length - 1) && (index > 0) && (DynamoCommons.isSpace(inputString[index - 1]))) {
+    if ((index <= inputString.length - 1) &&
+        (index > 0) &&
+        (DynamoCommons.isSpace(inputString[index - 1]))) {
       index = DynamoCommons.skipSpace(inputString, index);
       read();
     }
@@ -675,7 +704,9 @@ class DynamoDecoder {
     if (DynamoCommons.isAlpha(look)) {
       exprValue = look;
 
-      while ((index <= inputString.length - 1) && (DynamoCommons.isAlphaNum(inputString[index])) && (inputString[index] != ',')) {
+      while ((index <= inputString.length - 1) &&
+          (DynamoCommons.isAlphaNum(inputString[index])) &&
+          (inputString[index] != ',')) {
         exprValue += inputString[index++];
       }
     }
@@ -706,7 +737,9 @@ class DynamoDecoder {
         exprValue = look;
 
         while ((index <= inputString.length - 1) &&
-            (DynamoCommons.isDigit(inputString[index]) || inputString[index] == '.' || inputString[index] == 'E')) {
+            (DynamoCommons.isDigit(inputString[index]) ||
+                inputString[index] == '.' ||
+                inputString[index] == 'E')) {
           if (inputString[index] == 'E') {
             foundExponent = true;
             index++;
@@ -721,7 +754,9 @@ class DynamoDecoder {
       }
 
       if ((foundExponent) && (DynamoCommons.isDigitSequence(exponentValue))) {
-        exprValue = (double.parse(exprValue) * pow(10, double.parse(exponentValue))).toString();
+        exprValue =
+            (double.parse(exprValue) * pow(10, double.parse(exponentValue)))
+                .toString();
       }
     }
 

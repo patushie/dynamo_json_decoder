@@ -11,3 +11,9 @@
 ## 1.0.2
 * Optimized singleton initialization using null-aware assignment.
 * Finalized static analysis fixes for 160/160 score target.
+*
+## 1.0.3
+  * ran ```dart format .``` to format all files to standard dart format.
+*
+## 1.0.4
+* created a library to provide the Barrel File benefit to api users.

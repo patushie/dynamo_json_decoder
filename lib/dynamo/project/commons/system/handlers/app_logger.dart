@@ -24,13 +24,13 @@ class AppLogger {
   /// If [logLevel] is not specified, it defaults to [LogLevel.none]
   /// - which in turn defaults to [LogLevel.info].
   void log(String logData, {LogLevel logLevel = LogLevel.none}) {
-    if(logLevel == LogLevel.trace) {
+    if (logLevel == LogLevel.trace) {
       _logger!.t(logData);
-    } else if(logLevel == LogLevel.debug) {
+    } else if (logLevel == LogLevel.debug) {
       _logger!.d(logData);
-    } else if(logLevel == LogLevel.warning) {
+    } else if (logLevel == LogLevel.warning) {
       _logger!.w(logData);
-    }else if(logLevel == LogLevel.error) {
+    } else if (logLevel == LogLevel.error) {
       _logger!.e(logData);
     } else {
       _logger!.i(logData);

@@ -12,7 +12,6 @@ import 'package:dynamo_json_decoder/dynamo/project/commons/constants/pad_directi
 import 'app_logger.dart';
 
 class DynamoCommons {
-
   static Map<String, String> specialCharUnicodeMap = {
     "\\u003c": "<",
     "\\u003e": ">",
@@ -63,8 +62,8 @@ class DynamoCommons {
   static String showSimpleFileName(String fileName) {
     String simpleFileName = "";
 
-    if (fileName.toLowerCase().startsWith("http://")
-        || fileName.toLowerCase().startsWith("https://")) {
+    if (fileName.toLowerCase().startsWith("http://") ||
+        fileName.toLowerCase().startsWith("https://")) {
       simpleFileName = fileName.substring(fileName.lastIndexOf("/") + 1);
     }
 
@@ -72,13 +71,16 @@ class DynamoCommons {
   }
 
   /// checks if a screen size is mobile.
-  static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < 650;
+  static bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 650;
 
   /// tablet >= 650
-  static bool isTablet(BuildContext context) => MediaQuery.of(context).size.width >= 650;
+  static bool isTablet(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 650;
 
   ///desktop >= 1100
-  static bool isDesktop(BuildContext context) => MediaQuery.of(context).size.width >= 1100;
+  static bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 1100;
 
   /// Replaces unicode characters with their corresponding special characters.
   static String decodeUnicodeCharacters(String messageText) {
@@ -100,17 +102,21 @@ class DynamoCommons {
 
   /// strips off the domain name part of an email'.
   static String getUnqualifiedEmailName(String emailAddress) {
-    return emailAddress.contains("@") ? emailAddress.substring(0, emailAddress.indexOf("@")) : emailAddress;
+    return emailAddress.contains("@")
+        ? emailAddress.substring(0, emailAddress.indexOf("@"))
+        : emailAddress;
   }
 
   /// checks if an email address is correctly formatted.
   static bool isEmailFormat(String? emailAddress) {
-    bool? emailValidated = emailAddress != null && emailAddress.trim().isNotEmpty;
+    bool? emailValidated =
+        emailAddress != null && emailAddress.trim().isNotEmpty;
 
     if (emailValidated) {
       List<String> emailPart = emailAddress.split("@");
       if (emailPart.length == 2) {
-        emailValidated = isAlphaNumericWithNonB2BDots(emailPart.first) && isAlphaNumericWithNonB2BDots(emailPart.last);
+        emailValidated = isAlphaNumericWithNonB2BDots(emailPart.first) &&
+            isAlphaNumericWithNonB2BDots(emailPart.last);
       }
     }
 
@@ -118,7 +124,8 @@ class DynamoCommons {
   }
 
   /// does a calculation to determine a Text widget height.
-  static int calculateCharactersThatFit(String text, double containerWidth, TextStyle textStyle) {
+  static int calculateCharactersThatFit(
+      String text, double containerWidth, TextStyle textStyle) {
     final textPainter = TextPainter(
       textDirection: ui.TextDirection.ltr,
     );
@@ -140,7 +147,8 @@ class DynamoCommons {
 
   /// pads the input text [inputStr] with the pad string [padString],
   /// in the direction provided by [directionType], until the padded string equals [padLength].
-  static String padString(String inputStr, String padString, int padLength, PadDirectionType directionType) {
+  static String padString(String inputStr, String padString, int padLength,
+      PadDirectionType directionType) {
     if (inputStr.length < padLength) {
       if (directionType == PadDirectionType.left) {
         for (int i = 0; i <= padLength - inputStr.length - 1; i++) {
@@ -178,7 +186,7 @@ class DynamoCommons {
     moneyStr = moneyStr.replaceAll(",", "");
     moneyStr = moneyStr.replaceAll(" ", "");
 
-    if((moneyStr.startsWith("(")) && (moneyStr.endsWith(")"))) {
+    if ((moneyStr.startsWith("(")) && (moneyStr.endsWith(")"))) {
       moneyStr = '-${moneyStr.substring(1, moneyStr.length - 1)}';
     }
 
@@ -198,7 +206,8 @@ class DynamoCommons {
   }
 
   /// 17500 =>> 17,500.00
-  static String getMoneyFormat(double amount, {bool removeZeroFraction = false}) {
+  static String getMoneyFormat(double amount,
+      {bool removeZeroFraction = false}) {
     bool? isNegativeAmt = amount < 0;
 
     String? moneyStr = amount.abs().toString();
@@ -208,14 +217,17 @@ class DynamoCommons {
 
     if (moneyStr.contains(".")) {
       String? decimalPortion = moneyStr.substring(0, moneyStr.indexOf("."));
-      String? fractionalPortion = moneyStr.substring(moneyStr.indexOf(".") + 1, moneyStr.length);
+      String? fractionalPortion =
+          moneyStr.substring(moneyStr.indexOf(".") + 1, moneyStr.length);
 
       if (fractionalPortion.length == 2) {
         moneyStr = '${getFormattedAmount(decimalPortion)}.$fractionalPortion';
       } else if (fractionalPortion.length > 2) {
-        moneyStr = '${getFormattedAmount(decimalPortion)}.${fractionalPortion.substring(0, 2)}';
+        moneyStr =
+            '${getFormattedAmount(decimalPortion)}.${fractionalPortion.substring(0, 2)}';
       } else {
-        moneyStr = '${getFormattedAmount(decimalPortion)} . ${fractionalPortion}0';
+        moneyStr =
+            '${getFormattedAmount(decimalPortion)} . ${fractionalPortion}0';
       }
     } else {
       moneyStr = '${getFormattedAmount(moneyStr)} .00';
@@ -272,14 +284,18 @@ class DynamoCommons {
 
   /// check if character matches carriage return
   static bool isEnterKey(String char) {
-    return char.codeUnitAt(0) == 13 || char == '\n' || char == '\r' || char == '\r\n';
+    return char.codeUnitAt(0) == 13 ||
+        char == '\n' ||
+        char == '\r' ||
+        char == '\r\n';
   }
 
   /// check if character is an alphabet
   static bool isAlpha(String char) {
     int? asciiCode = char.codeUnitAt(0);
 
-    return (asciiCode >= 65 && asciiCode <= 90) || (asciiCode >= 97 && asciiCode <= 122);
+    return (asciiCode >= 65 && asciiCode <= 90) ||
+        (asciiCode >= 97 && asciiCode <= 122);
   }
 
   /// check if String has a capital letter
@@ -344,7 +360,8 @@ class DynamoCommons {
   /// skip whitespace character in a character sequence.
   static int skipSpace(String inputString, int index) {
     if (index <= inputString.length - 1) {
-      while ((isSpace(inputString[index])) && (index <= inputString.length - 1)) {
+      while (
+          (isSpace(inputString[index])) && (index <= inputString.length - 1)) {
         index++;
       }
     }
@@ -381,7 +398,8 @@ class DynamoCommons {
     for (var element in nameValuePairList) {
       List<String> nameValueArray = element.split("=");
       if (nameValueArray.length == 2) {
-        nameValueMap.putIfAbsent(nameValueArray[0].trim(), () => nameValueArray[1]);
+        nameValueMap.putIfAbsent(
+            nameValueArray[0].trim(), () => nameValueArray[1]);
       }
     }
 
@@ -401,7 +419,9 @@ class DynamoCommons {
       bytes = Uint8List.fromList(value);
       logger.log('reading of bytes is completed');
     }).catchError((onError) {
-      logger.log('Exception Error while reading audio from path: ${onError.toString()}', logLevel: LogLevel.error);
+      logger.log(
+          'Exception Error while reading audio from path: ${onError.toString()}',
+          logLevel: LogLevel.error);
     });
 
     return bytes;
@@ -416,7 +436,8 @@ class DynamoCommons {
   }
 
   /// trim [inputText] from the right to fit the length of [limitLength].
-  static String getTextByLimitedLength(String? inputText, {int limitLength = 0}) {
+  static String getTextByLimitedLength(String? inputText,
+      {int limitLength = 0}) {
     inputText ??= "";
 
     if (inputText.trim().isNotEmpty) {
@@ -440,7 +461,8 @@ class DynamoCommons {
 
     if (isAlpha(inputStr[0])) {
       while ((index <= inputStr.length - 1) && (isAlNumSeq)) {
-        isAlNumSeq = isAlNumSeq && (isDigit(inputStr[index]) || isAlpha(inputStr[index]));
+        isAlNumSeq = isAlNumSeq &&
+            (isDigit(inputStr[index]) || isAlpha(inputStr[index]));
         if (!isAlNumSeq) {
           break;
         }
@@ -465,7 +487,10 @@ class DynamoCommons {
 
     if (isAlpha(inputStr[0])) {
       while ((index <= inputStr.length - 1) && (isAlNumSeq)) {
-        isAlNumSeq = isAlNumSeq && (isDigit(inputStr[index]) || isAlpha(inputStr[index]) || (inputStr[index] == '.'));
+        isAlNumSeq = isAlNumSeq &&
+            (isDigit(inputStr[index]) ||
+                isAlpha(inputStr[index]) ||
+                (inputStr[index] == '.'));
         if (inputStr[index] == '.') {
           dotCount++;
         }
@@ -497,7 +522,10 @@ class DynamoCommons {
 
     if (isAlpha(inputStr[0])) {
       while ((index <= inputStr.length - 1) && (isAlNumSeq)) {
-        isAlNumSeq = isAlNumSeq && (isDigit(inputStr[index]) || isAlpha(inputStr[index]) || (inputStr[index] == '.'));
+        isAlNumSeq = isAlNumSeq &&
+            (isDigit(inputStr[index]) ||
+                isAlpha(inputStr[index]) ||
+                (inputStr[index] == '.'));
         if (inputStr[index] == '.') {
           dotCount++;
         } else {
@@ -556,7 +584,8 @@ class DynamoCommons {
     }
 
     while ((index <= inputStr.length - 1) && (isDigSeq)) {
-      isDigSeq = isDigSeq && (isDigit(inputStr[index]) || (inputStr[index] == '.'));
+      isDigSeq =
+          isDigSeq && (isDigit(inputStr[index]) || (inputStr[index] == '.'));
       if (inputStr[index] == '.') {
         dotCount++;
       }
@@ -583,7 +612,8 @@ class DynamoCommons {
     }
 
     while ((index <= inputStr.length - 1) && (isDigSeq)) {
-      isDigSeq = isDigSeq && (isDigit(inputStr[index]) || (inputStr[index] == '.'));
+      isDigSeq =
+          isDigSeq && (isDigit(inputStr[index]) || (inputStr[index] == '.'));
       index++;
     }
 
@@ -612,7 +642,8 @@ class DynamoCommons {
     int sb = b.length;
     int i, j, cost, min1, min2, min3;
     int levenshtein;
-    List<List<int>> d = List.generate(sa + 1, (int? i) => List<int>.filled(sb + 1, 0, growable: true));
+    List<List<int>> d = List.generate(
+        sa + 1, (int? i) => List<int>.filled(sb + 1, 0, growable: true));
 
     if (a.isEmpty) {
       levenshtein = b.length;

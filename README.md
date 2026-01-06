@@ -27,7 +27,7 @@ Or run:
 
 Import the library
 
-```import 'package:dynamo_json_decoder/dynamo_json_decoder.dart';```
+```import 'package:dynamo_json_decoder/dynamo_decoder.dart';```
 
 Simple Decoding Example
 
