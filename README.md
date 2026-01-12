@@ -74,7 +74,7 @@ class CustomerDTO {
 
 Future<CustomerDTO> getRemoteDataByID(int customerID) async {
   final response = await http.get(
-     Uri.parse("[https://api.example.com/data?customerID=${customerID}](https://api.example.com/data?customerID=${customerID})"));
+     Uri.parse("https://api.example.com/data?customerID=${customerID}"));
   
   if (response.statusCode == 200) {
     // Automatically handles Maps
@@ -86,7 +86,7 @@ Future<List<CustomerDTO>> getRemoteListData() async {
   List<CustomerDTO> customerList = [];
   
   final response = await http.get(
-     Uri.parse("[https://api.example.com/datalist](https://api.example.com/datalist)"));
+     Uri.parse("https://api.example.com/datalist"));
   
   if (response.statusCode == 200) {
     // Automatically handles Lists
