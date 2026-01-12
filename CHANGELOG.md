@@ -17,3 +17,6 @@
 *
 ## 1.0.4
 * created a library to provide the Barrel File benefit to api users.
+* 
+## 1.0.5
+* Fixed the format issue of url reference in the README example.
