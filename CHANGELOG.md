@@ -20,3 +20,6 @@
 * 
 ## 1.0.5
 * Fixed the format issue of url reference in the README example.
+* 
+## 1.0.6
+* Map<String, dynamic>() is a return requirement even thought the linter wants {}.

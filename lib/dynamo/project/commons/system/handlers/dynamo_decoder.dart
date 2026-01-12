@@ -53,7 +53,7 @@ class DynamoDecoder {
     }
 
     if (look == "{") {
-      jsonObject = {};
+      jsonObject = Map<String, dynamic>();
 
       while (look != "}") {
         if (debugMode) {
